@@ -9,9 +9,6 @@ page_html = urlopen(r).read()
 
 page_soup = soup(page_html, "html.parser")
 containers = page_soup.findAll("article", {"itemprop":"review"})
-# print(containers[0])
-# print("\n $$$$$ \n")
-
 
 filename = "reviews_test.csv"
 f = open(filename, "w")
