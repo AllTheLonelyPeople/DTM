@@ -4,13 +4,13 @@ import time
 
 # Avoid 403 error with headers
 # https://stackoverflow.com/questions/47594331/python-3-urlopen-http-error-403-forbidden
-r = Request('https://www.airlinequality.com/airline-reviews/american-airlines/page/1/?sortby=post_date%3ADesc&pagesize=10', headers={'User-Agent': 'Mozilla/5.0'})
+r = Request('https://www.airlinequality.com/airline-reviews/american-airlines/page/1/?sortby=post_date%3ADesc&pagesize=100', headers={'User-Agent': 'Mozilla/5.0'})
 page_html = urlopen(r).read()
 
 page_soup = soup(page_html, "html.parser")
 containers = page_soup.findAll("article", {"itemprop":"review"})
 
-filename = "reviews_test.csv"
+filename = "reviews_test1.csv"
 f = open(filename, "w")
 
 headers = ("reviewer_name, "
