@@ -10,14 +10,15 @@ page_html = urlopen(r).read()
 page_soup = soup(page_html, "html.parser")
 containers = page_soup.findAll("article", {"itemprop":"review"})
 
-filename = "reviews_test1.csv"
+filename = "reviews_test2.csv"
 f = open(filename, "w")
 
 headers = ("reviewer_name, "
             "reviewer_nationality, "
             "review_date, "
             "review_title, "
-            "type_of_traveler, "
+            "aircraft, "
+            "type_of_traveller, "
             "seat_type, "
             "route, "
             "date_flown, "
@@ -34,7 +35,10 @@ headers = ("reviewer_name, "
 f.write("")
 
 def get_star_rating(row):
-    return len(row.findAll("span", {"class": "star fill"}))
+    return str(len(row.findAll("span", {"class": "star fill"})))
+
+def get_review_value(row):
+    return row.find("td", {"class", "review-value"}).text
 
 for container in containers:
     review_info = container.find("div", {"class": "body"}).find("h3").text.strip()
@@ -48,12 +52,12 @@ for container in containers:
     review_title = body.find("h2").text.strip("\"")
 
     table_rows = body.find("div", {"class": "tc_mobile"}).find("div", {"class": "review-stats"}).find("table", {"class": "review-ratings"}).findAll("tr")
-    type_of_traveler = table_rows[0].find("td", {"class", "review-value"}).text
-    seat_type = table_rows[1].find("td", {"class", "review-value"}).text
-    route = table_rows[2].find("td", {"class", "review-value"}).text
-    date_flown = table_rows[3].find("td", {"class", "review-value"}).text
+    # type_of_traveller = table_rows[0].find("td", {"class", "review-value"}).text
+    # seat_type = table_rows[1].find("td", {"class", "review-value"}).text
+    # route = table_rows[2].find("td", {"class", "review-value"}).text
+    # date_flown = table_rows[3].find("td", {"class", "review-value"}).text
 
-
+    aircraft = "None"
     seat_comfort = "None"
     cabin_staff_service = "None"
     food_and_beverages = "None"
@@ -64,9 +68,24 @@ for container in containers:
 
     for row in table_rows:
         row_title = row.find("td", {"class": "review-rating-header"}).text
-        star_rating = str(get_star_rating(row))
+        star_rating = get_star_rating(row)
 
-        if row_title == "Seat Comfort":
+        if row_title == "Aircraft":
+            aircraft = get_review_value(row)
+        
+        elif row_title == "Type Of Traveller":
+            type_of_traveller = get_review_value(row)
+        
+        elif row_title == "Seat Type":
+            seat_type = get_review_value(row)
+        
+        elif row_title == "Route":
+            route = get_review_value(row)
+        
+        elif row_title == "Date Flown":
+            date_flown = get_review_value(row)
+
+        elif row_title == "Seat Comfort":
             seat_comfort = star_rating
         
         elif row_title == "Cabin Staff Service":
@@ -90,7 +109,7 @@ for container in containers:
         elif row_title == "Recommended":
             recommended = row.find("td", {"class": "review-value"}).text
 
-    f.write(reviewer_name + "," + reviewer_nationality + "," + review_date + "," + review_title + "," + type_of_traveler + "," + seat_type + "," + route + "," + date_flown + "," + overall_rating + "," + seat_comfort + "," + cabin_staff_service + "," + food_and_beverages + "," + inflight_entertainment + "," + ground_service + "," + wifi_and_connectivity + "," + value_for_money + "," + recommended + "\n")
+    f.write(reviewer_name + "," + reviewer_nationality + "," + review_date + "," + review_title + "," + aircraft + "," + type_of_traveller + "," + seat_type + "," + route + "," + date_flown + "," + overall_rating + "," + seat_comfort + "," + cabin_staff_service + "," + food_and_beverages + "," + inflight_entertainment + "," + ground_service + "," + wifi_and_connectivity + "," + value_for_money + "," + recommended + "\n")
 
 
 
