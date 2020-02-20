@@ -58,10 +58,6 @@ for container in containers:
     review_title = body.find("h2").text.strip("\"")
 
     table_rows = body.find("div", {"class": "tc_mobile"}).find("div", {"class": "review-stats"}).find("table", {"class": "review-ratings"}).findAll("tr")
-    # type_of_traveller = table_rows[0].find("td", {"class", "review-value"}).text
-    # seat_type = table_rows[1].find("td", {"class", "review-value"}).text
-    # route = table_rows[2].find("td", {"class", "review-value"}).text
-    # date_flown = table_rows[3].find("td", {"class", "review-value"}).text
 
     aircraft = "None"
     seat_comfort = "None"
