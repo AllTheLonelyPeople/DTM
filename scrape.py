@@ -42,7 +42,13 @@ def get_review_value(row):
 
 for container in containers:
     review_info = container.find("div", {"class": "body"}).find("h3").text.strip()
-    reviewer_name = review_info[:review_info.find("(") - 1]
+
+    # Check if user has left previous reviews
+    if not review_info[0].isalpha():
+        reviewer_name = review_info[13:review_info.find("(") - 1]
+    else:
+        reviewer_name = review_info[:review_info.find("(") - 1]
+
     reviewer_nationality = review_info[review_info.find("(") + 1:review_info.find(")")]
     review_date = review_info[review_info.find(")") + 2:]
 
