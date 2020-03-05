@@ -13,7 +13,7 @@ from bs4 import BeautifulSoup as soup
 import time
 
 # Create csv
-filename = "reviews_test3.csv"
+filename = "reviews_American.csv"
 f = open(filename, "w")
 
 headers = ("reviewer_name, "
@@ -39,7 +39,7 @@ headers = ("reviewer_name, "
 f.write(headers + "\n")
 
 # Loop over all pages
-for i in range(35):
+for i in range(37):
 
     # Make sure page starts at 1
     if i == 0:
@@ -56,7 +56,11 @@ for i in range(35):
 
 
     def get_star_rating(row):
-        return str(len(row.findAll("span", {"class": "star fill"})))
+        rating = len(row.findAll("span", {"class": "star fill"}))
+        if rating != 0:
+            return str(rating)
+        else:
+            return "999"
 
     def get_review_value(row):
         return row.find("td", {"class", "review-value"}).text
@@ -73,11 +77,15 @@ for i in range(35):
         reviewer_nationality = review_info[review_info.find("(") + 1:review_info.find(")")]
         review_date = review_info[review_info.find(")") + 2:]
 
-        overall_rating = container.find(itemprop="reviewRating").find("span", itemprop="ratingValue").text
+        try:
+            overall_rating = container.find(itemprop="reviewRating").find("span", itemprop="ratingValue").text
+        except:
+            overall_rating = "999"
 
         body = container.find("div", {"class": "body"})
 
-        review_title = body.find("h2").text.strip("\"")
+        review_title = body.find("h2").text.replace("\"", "").strip()
+        
 
         review_text_full = body.find("div", {"class": "tc_mobile"}).find("div", {"class": "text_content"}).text
         review_text = review_text_full[review_text_full.find("|") + 2:]
@@ -137,10 +145,9 @@ for i in range(35):
 
             elif row_title == "Recommended":
                 recommended = row.find("td", {"class": "review-value"}).text
-        print("!")
-        f.write(reviewer_name + "," + reviewer_nationality + "," + review_date + "," + review_title + "," + review_text.replace(",", "|") + "," + aircraft + "," + type_of_traveller + "," + seat_type + "," + route + "," + date_flown + "," + overall_rating + "," + seat_comfort + "," + cabin_staff_service + "," + food_and_beverages + "," + inflight_entertainment + "," + ground_service + "," + wifi_and_connectivity + "," + value_for_money + "," + recommended + "\n")
-        print(reviewer_name + "," + reviewer_nationality + "," + review_date + "," + review_title + "," + review_text.replace(",", "|") + "," + aircraft + "," + type_of_traveller + "," + seat_type + "," + route + "," + date_flown + "," + overall_rating + "," + seat_comfort + "," + cabin_staff_service + "," + food_and_beverages + "," + inflight_entertainment + "," + ground_service + "," + wifi_and_connectivity + "," + value_for_money + "," + recommended + "\n")
-        print("?")
+
+        f.write(reviewer_name + "," + reviewer_nationality + "," + review_date + "," + review_title + "," + review_text.replace(",", "|").strip() + "," + aircraft + "," + type_of_traveller + "," + seat_type + "," + route + "," + date_flown + "," + overall_rating + "," + seat_comfort + "," + cabin_staff_service + "," + food_and_beverages + "," + inflight_entertainment + "," + ground_service + "," + wifi_and_connectivity + "," + value_for_money + "," + recommended + "\n")
+    
     # Adjust crawl speed
     time.sleep(5)
 
