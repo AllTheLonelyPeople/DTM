@@ -48,6 +48,12 @@ for i in range(37):
     # Avoid 403 error with headers
     # https://stackoverflow.com/questions/47594331/python-3-urlopen-http-error-403-forbidden
     r = Request('https://www.airlinequality.com/airline-reviews/american-airlines/page/'+ str(i) +'/?sortby=post_date%3ADesc&pagesize=100', headers={'User-Agent': 'Mozilla/5.0'})
+    
+    # Delta airlines
+    # r = Request('https://www.airlinequality.com/airline-reviews/delta-air-lines/page/' + str(i) + '/?sortby=post_date%3ADesc&pagesize=100', headers={'User-Agent': 'Mozilla/5.0'})
+    
+    
+    
     page_html = urlopen(r).read()
 
     page_soup = soup(page_html, "html.parser")
@@ -94,14 +100,14 @@ for i in range(37):
         table_rows = body.find("div", {"class": "tc_mobile"}).find("div", {"class": "review-stats"}).find("table", {"class": "review-ratings"}).findAll("tr")
 
         # Decalre all table row variables
-        aircraft = "None"
-        seat_comfort = "None"
-        cabin_staff_service = "None"
-        food_and_beverages = "None"
-        inflight_entertainment = "None"
-        ground_service = "None"
-        wifi_and_connectivity = "None"
-        value_for_money = "None"
+        aircraft = "."
+        seat_comfort = "."
+        cabin_staff_service = "."
+        food_and_beverages = "."
+        inflight_entertainment = "."
+        ground_service = "."
+        wifi_and_connectivity = "."
+        value_for_money = "."
 
         for row in table_rows:
             row_title = row.find("td", {"class": "review-rating-header"}).text
@@ -146,7 +152,7 @@ for i in range(37):
             elif row_title == "Recommended":
                 recommended = row.find("td", {"class": "review-value"}).text
 
-        f.write(reviewer_name + "," + reviewer_nationality + "," + review_date + "," + review_title + "," + review_text.replace(",", "|").strip() + "," + aircraft + "," + type_of_traveller + "," + seat_type + "," + route + "," + date_flown + "," + overall_rating + "," + seat_comfort + "," + cabin_staff_service + "," + food_and_beverages + "," + inflight_entertainment + "," + ground_service + "," + wifi_and_connectivity + "," + value_for_money + "," + recommended + "\n")
+        f.write(reviewer_name.replace(",", "|").strip() + "," + reviewer_nationality.replace(",", "|").strip() + "," + review_date.replace(",", "|").strip() + "," + review_title.replace(",", "|").strip() + "," + review_text.replace(",", "|").strip() + "," + aircraft.replace(",", "|").strip() + "," + type_of_traveller.replace(",", "|").strip() + "," + seat_type.replace(",", "|").strip() + "," + route.replace(",", "|").strip() + "," + date_flown.replace(",", "|").strip() + "," + overall_rating + "," + seat_comfort + "," + cabin_staff_service + "," + food_and_beverages + "," + inflight_entertainment + "," + ground_service + "," + wifi_and_connectivity + "," + value_for_money + "," + recommended + "\n")
     
     # Adjust crawl speed
     time.sleep(5)
