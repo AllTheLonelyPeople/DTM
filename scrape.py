@@ -13,7 +13,7 @@ from bs4 import BeautifulSoup as soup
 import time
 
 # Create csv
-filename = "reviews_American.csv"
+filename = "reviews_Delta.csv"
 f = open(filename, "w")
 
 headers = ("reviewer_name, "
@@ -47,10 +47,10 @@ for i in range(37):
 
     # Avoid 403 error with headers
     # https://stackoverflow.com/questions/47594331/python-3-urlopen-http-error-403-forbidden
-    r = Request('https://www.airlinequality.com/airline-reviews/american-airlines/page/'+ str(i) +'/?sortby=post_date%3ADesc&pagesize=100', headers={'User-Agent': 'Mozilla/5.0'})
+    # r = Request('https://www.airlinequality.com/airline-reviews/american-airlines/page/'+ str(i) +'/?sortby=post_date%3ADesc&pagesize=100', headers={'User-Agent': 'Mozilla/5.0'})
     
     # Delta airlines
-    # r = Request('https://www.airlinequality.com/airline-reviews/delta-air-lines/page/' + str(i) + '/?sortby=post_date%3ADesc&pagesize=100', headers={'User-Agent': 'Mozilla/5.0'})
+    r = Request('https://www.airlinequality.com/airline-reviews/delta-air-lines/page/' + str(i) + '/?sortby=post_date%3ADesc&pagesize=100', headers={'User-Agent': 'Mozilla/5.0'})
     
     
     
