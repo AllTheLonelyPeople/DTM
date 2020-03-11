@@ -13,7 +13,7 @@ from bs4 import BeautifulSoup as soup
 import time
 
 # Create csv
-filename = "reviews_Delta.csv"
+filename = "reviews_American.csv"
 f = open(filename, "w")
 
 headers = ("reviewer_name, "
@@ -47,10 +47,10 @@ for i in range(37):
 
     # Avoid 403 error with headers
     # https://stackoverflow.com/questions/47594331/python-3-urlopen-http-error-403-forbidden
-    # r = Request('https://www.airlinequality.com/airline-reviews/american-airlines/page/'+ str(i) +'/?sortby=post_date%3ADesc&pagesize=100', headers={'User-Agent': 'Mozilla/5.0'})
+    r = Request('https://www.airlinequality.com/airline-reviews/american-airlines/page/'+ str(i) +'/?sortby=post_date%3ADesc&pagesize=100', headers={'User-Agent': 'Mozilla/5.0'})
     
     # Delta airlines
-    r = Request('https://www.airlinequality.com/airline-reviews/delta-air-lines/page/' + str(i) + '/?sortby=post_date%3ADesc&pagesize=100', headers={'User-Agent': 'Mozilla/5.0'})
+    # r = Request('https://www.airlinequality.com/airline-reviews/delta-air-lines/page/' + str(i) + '/?sortby=post_date%3ADesc&pagesize=100', headers={'User-Agent': 'Mozilla/5.0'})
     
     
     
@@ -100,14 +100,14 @@ for i in range(37):
         table_rows = body.find("div", {"class": "tc_mobile"}).find("div", {"class": "review-stats"}).find("table", {"class": "review-ratings"}).findAll("tr")
 
         # Decalre all table row variables
-        aircraft = "."
-        seat_comfort = "."
-        cabin_staff_service = "."
-        food_and_beverages = "."
-        inflight_entertainment = "."
-        ground_service = "."
-        wifi_and_connectivity = "."
-        value_for_money = "."
+        aircraft = "999"
+        seat_comfort = "999"
+        cabin_staff_service = "999"
+        food_and_beverages = "999"
+        inflight_entertainment = "999"
+        ground_service = "999"
+        wifi_and_connectivity = "999"
+        value_for_money = "999"
 
         for row in table_rows:
             row_title = row.find("td", {"class": "review-rating-header"}).text
